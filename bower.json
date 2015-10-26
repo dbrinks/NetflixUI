@@ -1,0 +1,20 @@
+{
+  "name": "NetflixUI",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dbrinks/NetflixUI",
+  "description": "Recreating Netflix UI for fun",
+  "authors": [
+    "Devon Brinks (brinks.d@gmail.com)"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "~2.1.20"
+  }
+}
