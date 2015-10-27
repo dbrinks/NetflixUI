@@ -4,3 +4,5 @@ bower_components
 dest
 ext
 .sass-cache
+public/css
+public/js

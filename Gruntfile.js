@@ -1,6 +1,13 @@
 module.exports = function(grunt) {
 
     grunt.initConfig({
+        bower: {
+            dev: {
+                dest: 'public',
+                js_dest: 'public/js/lib',
+                css_dest: 'public/css/lib',
+            }
+        },
         jshint: {
             files: ['Gruntfile.js', 'src/**/*.js'],
             options: {
@@ -59,12 +66,13 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.loadNpmTasks('grunt-bower');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-serve');
 
-    grunt.registerTask('default', ['sass', 'jshint', 'requirejs', 'serve', 'watch']);
+    grunt.registerTask('default', ['sass', 'jshint', 'requirejs', 'bower', 'serve']);
 
 };

@@ -10,6 +10,7 @@
     "grunt-contrib-watch": "^0.6.1"
   },
   "devDependencies": {
+    "grunt-bower": "^0.20.0",
     "grunt-serve": "^0.1.6"
   },
   "scripts": {
@@ -20,7 +21,6 @@
     "url": "https://github.com/dbrinks/NetflixUI.git"
   },
   "author": "Devon Brinks (brinks.d@gmail.com)",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/dbrinks/NetflixUI/issues"
   },
