@@ -17,16 +17,13 @@ module.exports = function(grunt) {
     requirejs: {
       compile: {
         options: {
-          baseUrl: "src",
+          baseUrl: "src/js",
           dir: "public/js",
           removeCombined: true,
           optimize: "none",
           modules: [
             {
               name: "main",
-              exclude: [
-                "lib/require"
-              ]
             }
           ],
           useStrict: true
@@ -39,15 +36,13 @@ module.exports = function(grunt) {
 	  style: 'expanded'
 	},
 	files: {
-          src:['src/**/*.scss'],
-	  dest: 'public/css',
-	  ext: '.css'
+	  'public/css/main.css': 'src/scss/main.scss'
         }
       },
     },
     watch: {
       css: {
-        files: 'src/**/*.scss',
+        files: '*.scss',
         tasks: ['sass']
       },
       scripts: {
