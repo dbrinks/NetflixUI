@@ -1,0 +1,24 @@
+@import "_global_variables";
+@import "_video-lists";
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+
+}
+
+body { 
+    background: $background-color;
+    color: #eee;
+}
+
+main{
+    
+}
+
+.ntfx-genres {
+    padding: 0 2%;
+    list-style: none;
+}

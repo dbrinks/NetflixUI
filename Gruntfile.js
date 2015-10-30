@@ -46,33 +46,41 @@ module.exports = function(grunt) {
                 }
             },
         },
-        serve: {
-            options: {
-                port: 8888,
-                serve: {
-                    path: 'public'
-                }
-            }
-        },
+	connect: {
+            server: {
+	        options: {
+		    livereload: true,
+		    hostname: 'localhost',
+		    port: 8888,
+		    base: 'public'
+		}
+	    }
+	},
         watch: {
             css: {
-                files: '*.scss',
-                tasks: ['sass']
+                files: '**/*.scss',
+                tasks: ['sass'],
+		options: {
+                    livereload: true
+		}
             },
             scripts: {
                 files: ['<%= jshint.files %>'],
-                tasks: ['jshint', 'requirejs']
+                tasks: ['jshint', 'requirejs', 'bower'],
+		options: {
+                    livereload: true
+		}
             }
         }
     });
 
     grunt.loadNpmTasks('grunt-bower');
+    grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-requirejs');
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-serve');
 
-    grunt.registerTask('default', ['sass', 'jshint', 'requirejs', 'bower', 'serve']);
+    grunt.registerTask('default', ['sass', 'jshint', 'requirejs', 'bower', 'connect', 'watch']);
 
 };
