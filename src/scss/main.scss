@@ -1,5 +1,7 @@
 @import "_global_variables";
+@import "_genres";
 @import "_video-lists";
+@import "_selected-video.scss"; /* possibly lazy load since not displayed on page load */
 
 * {
     box-sizing: border-box;
@@ -10,15 +12,7 @@ html, body {
 }
 
 body { 
-    background: $background-color;
+    background: $app-background-color;
     color: #eee;
 }
 
-main{
-    
-}
-
-.ntfx-genres {
-    padding: 0 2%;
-    list-style: none;
-}

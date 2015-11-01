@@ -1,9 +1,15 @@
-.ntfx-video-list {
+.genre-list {
+  padding: 0 2%;
+  list-style: none;
+}
+
+.video-list {
   padding: 0;
   white-space: nowrap;
   list-style: none;
+  overflow: scroll;
 }
-.ntfx-video-list .ntfx-video-item {
+.video-list .video {
   display: inline-block;
   position: relative;
   width: 20%;
@@ -14,15 +20,16 @@
   background-repeat: no-repeat;
   transition: border-color .3s;
 }
-.ntfx-video-list .ntfx-video-item:hover {
+.video-list .video:hover {
   border-color: #ddd;
 }
-.ntfx-video-list .ntfx-video-item a {
+.video-list .video a {
   display: block;
   width: 100%;
   height: 100%;
 }
 
+/* possibly lazy load since not displayed on page load */
 * {
   box-sizing: border-box;
 }
@@ -30,11 +37,6 @@
 body {
   background: #111;
   color: #eee;
-}
-
-.ntfx-genres {
-  padding: 0 2%;
-  list-style: none;
 }
 
 /*# sourceMappingURL=main.css.map */
