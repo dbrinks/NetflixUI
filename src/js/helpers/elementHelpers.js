@@ -3,7 +3,6 @@ define(function() {
 
     return {
         getPosition: function(el) {
-
             return el.getBoundingClientRect();
         }
     };

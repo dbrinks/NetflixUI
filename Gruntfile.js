@@ -1,6 +1,17 @@
 module.exports = function(grunt) {
+    require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
+        babel: {
+            options: {
+                sourceMap: false
+            },
+            dist: {
+                files: {
+                    'public/js/main.js': 'public/js/main.js'
+                }
+            }
+        },
         bower: {
             dev: {
                 dest: 'public',
@@ -11,7 +22,7 @@ module.exports = function(grunt) {
         jshint: {
             files: ['Gruntfile.js', 'src/**/*.js'],
             options: {
-                // options here to override JSHint defaults
+                esnext: true,
                 globals: {
                     console: true,
                     document: true,
@@ -25,12 +36,12 @@ module.exports = function(grunt) {
             compile: {
                 options: {
                     noBuildTxt: true,
-                    baseUrl: "src/js",
-                    dir: "public/js",
+                    baseUrl: 'src/js',
+                    dir: 'public/js',
                     removeCombined: true,
-                    optimize: "none",
+                    optimize: 'none',
                     modules: [{
-                        name: "main",
+                        name: 'main',
                     }],
                     useStrict: true
                 }
@@ -46,41 +57,34 @@ module.exports = function(grunt) {
                 }
             },
         },
-	connect: {
+        connect: {
             server: {
-	        options: {
-		    livereload: true,
-		    hostname: 'localhost',
-		    port: 8888,
-		    base: 'public'
-		}
-	    }
-	},
+                options: {
+                    livereload: true,
+                    hostname: 'localhost',
+                    port: 8888,
+                    base: 'public'
+                }
+            }
+        },
         watch: {
             css: {
                 files: '**/*.scss',
                 tasks: ['sass'],
-		options: {
+                options: {
                     livereload: true
-		}
+                }
             },
             scripts: {
                 files: ['<%= jshint.files %>'],
-                tasks: ['jshint', 'requirejs', 'bower'],
-		options: {
+                tasks: ['jshint', 'requirejs', 'babel', 'bower'],
+                options: {
                     livereload: true
-		}
+                }
             }
         }
     });
 
-    grunt.loadNpmTasks('grunt-bower');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-requirejs');
-    grunt.loadNpmTasks('grunt-contrib-sass');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-
-    grunt.registerTask('default', ['sass', 'jshint', 'requirejs', 'bower', 'connect', 'watch']);
+    grunt.registerTask('default', ['sass', 'jshint', 'requirejs', 'babel', 'bower', 'connect', 'watch']);
 
 };
