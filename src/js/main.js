@@ -1,7 +1,7 @@
-require(function() {
+require(["app/appControllerFactory"], function(AppControllerFactory) {
 
-    // instantiate page controller
-    // instantiate genre controllers
-    // 
+    var app = AppControllerFactory.get();
+
+    // lazy load additional genres
 
 });

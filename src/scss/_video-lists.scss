@@ -18,7 +18,8 @@
 
         transition: border-color .3s;
 
-        &:hover{
+        &:hover,
+        &.focused {
             border-color: #ddd;
         }
 
