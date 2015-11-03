@@ -1,22 +1,78 @@
 'use strict';
 
-define('genres/genreController', [], function () {
+define('config/app', [], function () {
+    "use strict";
+
+    var config = {
+        // I dislike this name...
+        videosPerSet: 5
+    };
+
+    return {
+        getVideosPerSet: function getVideosPerSet() {
+            return config.videosPerSet;
+        }
+    };
+});
+
+define('genres/genreController', ["config/app"], function (AppConfig) {
 
     var GenreController = function GenreController(model, view) {
         this._model = model;
         this._view = view;
+
+        this._boundHandleVideoSwitch = this._handleVideoSwitch.bind(this);
     };
 
     GenreController.prototype = {
-        setFocus: function setFocus() {
-            this._model.setFocus(true);
+        _bindEvents: function _bindEvents() {
+            document.addEventListener("keyup", this._boundHandleVideoSwitch);
+        },
+
+        _unbindEvents: function _unbindEvents() {
+            document.removeEventListener("keyup", this._boundHandleVideoSwitch);
+        },
+
+        _handleVideoSwitch: function _handleVideoSwitch(event) {
+            event.preventDefault();
+
+            // can also do page up/down for steps of N
+            switch (event.keyCode) {
+                case 37:
+                    this.setVideoFocusByDelta(-1);
+                    this.render();
+                    break;
+                case 39:
+                    this.setVideoFocusByDelta(1);
+                    this.render();
+                    break;
+                default:
+                    // do nothing
+                    break;
+            }
+        },
+
+        setVideoFocusByDelta: function setVideoFocusByDelta(delta) {
+            this._model.setFocusIndex(this._model.getFocusIndex() + delta);
+        },
+
+        setFocus: function setFocus(isFocused, focusModulo) {
+            this._model.setFocus(isFocused);
+
+            if (isFocused) {
+                this._bindEvents();
+                var currentModulo = this._model.getFocusIndex() % AppConfig.getVideosPerSet();
+
+                this.setVideoFocusByDelta(focusModulo - currentModulo);
+            } else {
+                this._unbindEvents();
+            }
 
             this.render();
         },
 
-        setUnfocus: function setUnfocus() {
-            this._model.setFocus(false);
-            this.render();
+        getFocusIndex: function getFocusIndex() {
+            return this._model.getFocusIndex();
         },
 
         render: function render() {
@@ -126,11 +182,7 @@ define('genres/genreControllerFactory', ["genres/genreController", "genres/genre
 define('helpers/elementHelpers', [], function () {
     "use strict";
 
-    return {
-        getPosition: function getPosition(el) {
-            return el.getBoundingClientRect();
-        }
-    };
+    return {};
 });
 
 define('helpers/arrayHelpers', [], function () {
@@ -143,7 +195,7 @@ define('helpers/arrayHelpers', [], function () {
     };
 });
 
-define('app/appController', ["genres/genreControllerFactory", "helpers/elementHelpers", "helpers/arrayHelpers"], function (GenreControllerFactory, ElementHelpers, ArrayHelpers) {
+define('app/appController', ["genres/genreControllerFactory", "helpers/elementHelpers", "helpers/arrayHelpers", "config/app"], function (GenreControllerFactory, ElementHelpers, ArrayHelpers, AppConfig) {
     "use strict";
 
     var AppController = function AppController(model) {
@@ -196,13 +248,16 @@ define('app/appController', ["genres/genreControllerFactory", "helpers/elementHe
 
                 var oldFocus = this._genreControllers[oldIndex];
                 var newFocus = this._genreControllers[newIndex];
+                var oldFocusIndex;
 
                 if (oldFocus) {
-                    oldFocus.setUnfocus();
+                    oldFocus.setFocus(false);
+                    oldFocusIndex = oldFocus.getFocusIndex();
                 }
 
                 if (newFocus) {
-                    newFocus.setFocus();
+                    var oldFocusModulo = typeof oldFocusIndex !== "undefined" ? oldFocusIndex % AppConfig.getVideosPerSet() : 0;
+                    newFocus.setFocus(true, oldFocusModulo);
                     this._focusGenre(newFocus.getFocusElement());
                 }
             }
@@ -222,9 +277,16 @@ define('app/appController', ["genres/genreControllerFactory", "helpers/elementHe
         },
 
         _focusGenre: function _focusGenre(el) {
-            var position = ElementHelpers.getPosition(el);
+            var position = el.getBoundingClientRect();
+            var height = el.clientHeight;
+            var scrollPosition = window.scrollY;
+            var windowHeight = window.innerHeight;
 
-            document.scrollingElement.scrollTop = position.top;
+            console.log(position.top + height < scrollPosition, position.top + height >= scrollPosition + windowHeight);
+
+            if (position.top + height < scrollPosition || position.top + height >= scrollPosition + windowHeight) {
+                window.scrollY = position.top;
+            }
         }
     };
 

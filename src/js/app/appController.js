@@ -1,11 +1,13 @@
 define([
     "genres/genreControllerFactory",
     "helpers/elementHelpers",
-    "helpers/arrayHelpers"
+    "helpers/arrayHelpers",
+    "config/app"
 ], function(
     GenreControllerFactory,
     ElementHelpers,
-    ArrayHelpers
+    ArrayHelpers,
+    AppConfig
 ) {
     "use strict";
 
@@ -59,13 +61,16 @@ define([
 
                 var oldFocus = this._genreControllers[oldIndex];
                 var newFocus = this._genreControllers[newIndex];
+                var oldFocusIndex;
 
                 if (oldFocus) {
-                    oldFocus.setUnfocus();
+                    oldFocus.setFocus(false);
+                    oldFocusIndex = oldFocus.getFocusIndex();
                 }
 
                 if (newFocus) {
-                    newFocus.setFocus();
+                    var oldFocusModulo = typeof(oldFocusIndex) !== "undefined" ? oldFocusIndex % AppConfig.getVideosPerSet() : 0;
+                    newFocus.setFocus(true, oldFocusModulo);
                     this._focusGenre(newFocus.getFocusElement());
                 }
             }
@@ -85,9 +90,16 @@ define([
         },
 
         _focusGenre: function(el) {
-            var position = ElementHelpers.getPosition(el);
+            var position = el.getBoundingClientRect();
+            var height = el.clientHeight;
+            var scrollPosition = window.scrollY;
+            var windowHeight = window.innerHeight;
 
-            document.scrollingElement.scrollTop = position.top;
+            console.log(position.top + height < scrollPosition, position.top + height >= scrollPosition + windowHeight);
+
+            if (position.top + height < scrollPosition || position.top + height >= scrollPosition + windowHeight) {
+                window.scrollY = position.top;
+            }
         }
     };
 
