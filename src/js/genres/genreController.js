@@ -58,15 +58,15 @@ define([
             this.render();
         },
 
-        getFocusIndex: function() {
-            return this._model.getFocusIndex();
-        },
-
         render: function() {
             this._view.render({
                 isFocused: this._model.isFocused(),
                 focusIndex: this._model.getFocusIndex(),
             });
+        },
+
+        getFocusIndex: function() {
+            return this._model.getFocusIndex();
         },
 
         getFocusElement: function() {

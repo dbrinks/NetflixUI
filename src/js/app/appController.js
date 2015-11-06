@@ -90,15 +90,13 @@ define([
         },
 
         _focusGenre: function(el) {
-            var position = el.getBoundingClientRect();
+            var position = ElementHelpers.getOffset(el);
             var height = el.clientHeight;
             var scrollPosition = window.scrollY;
             var windowHeight = window.innerHeight;
 
-            console.log(position.top + height < scrollPosition, position.top + height >= scrollPosition + windowHeight);
-
-            if (position.top + height < scrollPosition || position.top + height >= scrollPosition + windowHeight) {
-                window.scrollY = position.top;
+            if (position.top < scrollPosition || position.top + height >= scrollPosition + windowHeight) {
+                window.scrollTo(0, position.top);
             }
         }
     };
