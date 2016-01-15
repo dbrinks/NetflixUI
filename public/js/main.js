@@ -71,15 +71,15 @@ define('genres/genreController', ["config/app"], function (AppConfig) {
             this.render();
         },
 
-        getFocusIndex: function getFocusIndex() {
-            return this._model.getFocusIndex();
-        },
-
         render: function render() {
             this._view.render({
                 isFocused: this._model.isFocused(),
                 focusIndex: this._model.getFocusIndex()
             });
+        },
+
+        getFocusIndex: function getFocusIndex() {
+            return this._model.getFocusIndex();
         },
 
         getFocusElement: function getFocusElement() {
@@ -123,6 +123,7 @@ define('helpers/ArrayHelpers', [], function () {
     "use strict";
 
     return {
+
         toArray: function toArray(arrayLikeStruct) {
             return Array.prototype.slice.call(arrayLikeStruct);
         }
@@ -182,13 +183,31 @@ define('genres/genreControllerFactory', ["genres/genreController", "genres/genre
 define('helpers/elementHelpers', [], function () {
     "use strict";
 
-    return {};
+    return {
+        getOffset: function getOffset(el) {
+            var node = el;
+            var left = 0;
+            var top = 0;
+
+            while (node.offsetLeft) {
+                left += node.offsetLeft;
+                top += node.offsetTop;
+
+                node = node.parentNode;
+            }
+
+            return {
+                left: left, top: top
+            };
+        }
+    };
 });
 
 define('helpers/arrayHelpers', [], function () {
     "use strict";
 
     return {
+
         toArray: function toArray(arrayLikeStruct) {
             return Array.prototype.slice.call(arrayLikeStruct);
         }
@@ -278,15 +297,13 @@ define('app/appController', ["genres/genreControllerFactory", "helpers/elementHe
         },
 
         _focusGenre: function _focusGenre(el) {
-            var position = el.getBoundingClientRect();
+            var position = ElementHelpers.getOffset(el);
             var height = el.clientHeight;
             var scrollPosition = window.scrollY;
             var windowHeight = window.innerHeight;
 
-            console.log(position.top + height < scrollPosition, position.top + height >= scrollPosition + windowHeight);
-
-            if (position.top + height < scrollPosition || position.top + height >= scrollPosition + windowHeight) {
-                window.scrollY = position.top;
+            if (position.top < scrollPosition || position.top + height >= scrollPosition + windowHeight) {
+                window.scrollTo(0, position.top);
             }
         }
     };
