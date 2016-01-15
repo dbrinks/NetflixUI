@@ -219,11 +219,12 @@ define('app/appController', ["genres/genreControllerFactory", "helpers/elementHe
         },
 
         _bindEvents: function _bindEvents() {
-            document.addEventListener("keyup", this._handleGenreSwitch.bind(this));
+            document.addEventListener("keyup", this._handleGenreSwitch.bind(this), false);
         },
 
         _handleGenreSwitch: function _handleGenreSwitch(event) {
             event.preventDefault();
+            console.log(event);
 
             // can also do page up/down for steps of N
             switch (event.keyCode) {

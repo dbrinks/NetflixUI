@@ -32,11 +32,12 @@ define([
         },
 
         _bindEvents: function() {
-            document.addEventListener("keyup", this._handleGenreSwitch.bind(this));
+            document.addEventListener("keyup", this._handleGenreSwitch.bind(this), false);
         },
 
         _handleGenreSwitch: function(event) {
             event.preventDefault();
+            console.log(event);
 
             // can also do page up/down for steps of N
             switch (event.keyCode) {
